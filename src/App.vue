@@ -1,11 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import FeatureMovies from '@/components/FeatureMovies/FeatureMovies.vue'
+import Header from '@/components/Header.vue'
+import MediaList from '@/components/MediaList/MediaList.vue'
+import { TAB_CONFIG } from './constants/tab' // or the correct path to your TAB_CONFIG export
+</script>
 
 <template>
-  <h1 class="text-red-500">You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div>
+    <Header />
+    <FeatureMovies />
+    <MediaList :title="TAB_CONFIG.TRENDING.label" :tab="TAB_CONFIG.TRENDING.items" />
+    <MediaList :title="TAB_CONFIG.TOP_RATED.label" :tab="TAB_CONFIG.TOP_RATED.items" />
+  </div>
 </template>
 
 <style scoped></style>
