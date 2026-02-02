@@ -7,4 +7,10 @@ export const movieServices = {
   getTopRatedMovies() {
     return httpClient.get('/movie/top_rated')
   },
+  getMovieById(id: string) {
+    return httpClient.get(`/movie/${id}?append_to_response=release_dates,credits`)
+  },
+  getRelatedMovies(id: string) {
+    return httpClient.get(`/movie/${id}/recommendations`)
+  },
 }

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <img
+    <ImagePriority
       :src="`https://image.tmdb.org/t/p/original${props.backdrop_path}`"
       class="w-full aspect-video brightness-50"
+      :width="1300"
+      :height="720"
     />
 
     <div class="absolute bottom-[10%] left-8 w-1/2 sm:w-1/3">
@@ -38,6 +40,7 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import ImagePriority from '@/components/ImagePriority.vue'
 
 const props = defineProps<{
   backdrop_path: string

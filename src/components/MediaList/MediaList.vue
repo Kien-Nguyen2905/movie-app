@@ -23,18 +23,21 @@
       <MovieCard
         v-for="media in mediaList"
         :key="media.id"
+        :id="media.id"
         :title="media.title || media.name"
         :release-date="media.release_date || media.first_air_date"
         :poster="media.poster_path"
         :point="media.vote_average"
         :media-type="media.media_type"
+        @click="router.push({ name: 'movie-detail', params: { id: media.id } })"
       />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import MovieCard from '@/components/MediaList/MovieCard.vue'
+import MovieCard from '@/components/MovieCard.vue'
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   title: string
@@ -45,6 +48,7 @@ const props = defineProps<{
   }[]
 }>()
 
+const router = useRouter()
 const activeTabId = ref()
 const mediaList = ref<any[]>([])
 

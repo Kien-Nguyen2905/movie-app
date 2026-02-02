@@ -62,3 +62,5 @@ const radius = computed(() => size / 2 - strokeWidth)
 const circumference = computed(() => 2 * Math.PI * radius.value)
 const dashOffset = computed(() => circumference.value - (percent / 100) * circumference.value)
 </script>
+
+<style scoped></style>
