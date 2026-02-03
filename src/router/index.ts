@@ -1,7 +1,3 @@
-import RootLayout from '@/layout/RootLayout.vue'
-import HomPage from '@/pages/HomPage.vue'
-import MovieDetailPage from '@/pages/MovieDetailPage.vue'
-import TVShowDetailPage from '@/pages/TVShowDetailPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -9,22 +5,27 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: RootLayout,
+      component: () => import('@/layout/RootLayout.vue'),
       children: [
         {
           path: '',
           name: 'home',
-          component: HomPage,
+          component: () => import('@/pages/HomPage.vue'),
         },
         {
           path: '/movie/:id',
           name: 'movie-detail',
-          component: MovieDetailPage,
+          component: () => import('@/pages/MovieDetailPage.vue'),
         },
         {
           path: '/tv/:id',
           name: 'tv-detail',
-          component: TVShowDetailPage,
+          component: () => import('@/pages/TVShowDetailPage.vue'),
+        },
+        {
+          path: '/people/:id',
+          name: 'people-detail',
+          component: () => import('@/pages/PeoplePage.vue'),
         },
       ],
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-black border rounded-lg shadow-sm border-slate-300">
+  <RouterLink :to="`/people/${id}`" class="bg-black border rounded-lg shadow-sm border-slate-300">
     <Image
       class="rounded-lg"
       :src="
@@ -15,10 +15,11 @@
       <p class="font-bold">{{ name }}</p>
       <p>{{ character }}</p>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import Image from '@/components/Image.vue'
 
 defineProps<{
