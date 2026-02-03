@@ -1,30 +1,63 @@
 <template>
   <div class="relative text-white">
     <Movie
-      v-for="movie in popularList.filter((m) => m.id === activeMovieId)"
-      :key="movie.id"
-      v-bind="movie"
+      v-if="activeMovie"
+      :key="activeMovie.id"
+      :trailerVideoKey="trailerVideoKey"
+      v-bind="activeMovie"
     />
-    <PaginateIndicator :movies="popularList" v-model:activeMovieId="activeMovieId" />
+    <PaginateIndicator :movies="popularList" v-model:activeMovieId="activeMovieId as number" />
   </div>
 </template>
 
 <script setup lang="ts">
 import Movie from '@/components/FeatureMovies/Movie.vue'
 import PaginateIndicator from '@/components/FeatureMovies/PaginateIndicator.vue'
+import type { MovieItem, VideoItem } from '@/components/FeatureMovies/type'
 import { movieServices } from '@/services/movie'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
-const popularList = ref([])
-const activeMovieId = ref()
+const popularList = ref<MovieItem[]>([])
+const activeMovieId = ref<number>()
+const videosMovie = ref<VideoItem[]>()
 
 const fetch = async () => {
-  const response = await movieServices.getPopularMovies()
-  popularList.value = response.data.results.slice(0, 4)
-  activeMovieId.value = popularList.value[0].id
+  try {
+    const response = await movieServices.getPopularMovies()
+    popularList.value = response.data.results.slice(0, 4)
+    activeMovieId.value = popularList.value[0]?.id
+  } catch (error) {
+    console.error('Failed to fetch movies:', error)
+  }
 }
 
 onMounted(fetch)
+
+watch(
+  () => activeMovieId.value,
+  async (newId) => {
+    if (!newId) return
+    try {
+      const response = await movieServices.getVideosMovie(newId)
+      videosMovie.value = response.data.results
+    } catch (error) {
+      console.error('Failed to fetch videos:', error)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
+
+const activeMovie = computed(() => popularList.value.find((m) => m.id === activeMovieId.value))
+
+const trailerVideoKey = computed(() => {
+  if (!videosMovie.value?.length) return ''
+  const trailer = videosMovie.value.find(
+    (video) => video.type === 'Trailer' && video.site === 'YouTube',
+  )
+  return trailer?.key ?? ''
+})
 </script>
 
 <style scoped></style>

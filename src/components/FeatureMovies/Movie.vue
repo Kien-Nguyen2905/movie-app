@@ -25,12 +25,20 @@
         </div>
 
         <div class="mt-4">
-          <button class="px-4 py-2 mr-2 text-black bg-white rounded lg:text-lg">
+          <button
+            @click="openTrailer"
+            class="px-4 py-2 mr-2 text-black bg-white rounded lg:text-lg"
+          >
             <FontAwesomeIcon :icon="faPlay" />
             Trailer
           </button>
 
-          <button class="px-4 py-2 rounded bg-slate-300/35 lg:text-lg">View Detail</button>
+          <button
+            @click="router.push(`movie/${props.id}`)"
+            class="px-4 py-2 rounded bg-slate-300/35 lg:text-lg"
+          >
+            View Detail
+          </button>
         </div>
       </div>
     </div>
@@ -41,13 +49,27 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import ImagePriority from '@/components/ImagePriority.vue'
+import TrailerModal from '@/components/TrailerModal.vue'
+import { h, inject } from 'vue'
+import { useRouter } from 'vue-router'
+import { ModalKey } from '@/types/modal'
 
 const props = defineProps<{
+  id: number
   backdrop_path: string
   title: string
   release_date: string
   overview: string
+  trailerVideoKey?: string
 }>()
+const router = useRouter()
+const modal = inject(ModalKey)
+
+const openTrailer = () => {
+  if (modal && props.trailerVideoKey) {
+    modal.openPopup(h(TrailerModal, { videoKey: props.trailerVideoKey }))
+  }
+}
 </script>
 
 <style scoped></style>

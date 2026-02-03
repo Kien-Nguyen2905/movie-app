@@ -22,13 +22,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import ActorInfo from './ActorInfo.vue'
-
-type Actor = {
-  id: number
-  name: string
-  character: string
-  profile_path?: string | null
-}
+import type { Actor } from '@/components/MediaDetail/type'
 
 const props = defineProps<{
   actors?: Actor[]

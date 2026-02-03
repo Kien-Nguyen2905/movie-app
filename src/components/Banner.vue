@@ -37,7 +37,10 @@
             Rating
           </div>
 
-          <button>
+          <button
+            @click="openTrailer"
+            class="flex items-center px-3 py-1 font-bold bg-white rounded text-slate-900 hover:bg-gray-200"
+          >
             <FontAwesomeIcon :icon="faPlay" class="mr-1" />
             Trailer
           </button>
@@ -52,7 +55,7 @@
           <div v-for="job in Object.keys(groupedCrews)" :key="job">
             <p class="font-bold">{{ job }}</p>
             <p>
-              {{ groupedCrews[job].map((c) => c.name).join(', ') }}
+              {{ groupedCrews[job]?.map((c: CrewMember) => c.name).join(', ') }}
             </p>
           </div>
         </div>
@@ -61,18 +64,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
-import { groupBy } from 'lodash'
+import { computed, h, inject } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import CircularProgressBar from '@/components/CircularProgressBar.vue'
+import TrailerModal from '@/components/TrailerModal.vue'
 import ImagePriority from '@/components/ImagePriority.vue'
-
-type Crew = {
-  id: number
-  job: string
-  name: string
-}
+import { ModalKey } from '@/types/modal'
+import type { CrewMember } from '@/components/type'
 
 const props = defineProps<{
   backdrop_path: string
@@ -82,30 +81,32 @@ const props = defineProps<{
   genres: { id: number; name: string }[]
   vote_average: number
   overview: string
-  release_dates?: any
-  credits: any
+  certification: any
+  crews: CrewMember[]
+  trailerVideoKey?: string
 }>()
 
-const backdropUrl = `https://image.tmdb.org/t/p/w1280${props.backdrop_path}`
-const posterUrl = `https://media.themoviedb.org/t/p/w600_and_h900_bestv2${props.poster_path}`
+const modal = inject(ModalKey)
 
-const certification = computed(() => {
-  const results = props.release_dates?.results || []
-  const us = results.find((r: any) => r.iso_3166_1 === 'US')
-  return us?.release_dates?.find((r: any) => r.certification)?.certification
-})
-
-const crews = computed<Crew[]>(() =>
-  (props.credits?.crew || [])
-    .filter((c: any) => ['Director', 'Screenplay', 'Writer'].includes(c.job))
-    .map((c: any) => ({
-      id: c.id,
-      job: c.job,
-      name: c.name,
-    })),
+const openTrailer = () => {
+  if (modal && props.trailerVideoKey) {
+    modal.openPopup(h(TrailerModal, { videoKey: props.trailerVideoKey }))
+  }
+}
+const backdropUrl = computed(() => `https://image.tmdb.org/t/p/w1280${props.backdrop_path}`)
+const posterUrl = computed(
+  () => `https://media.themoviedb.org/t/p/w600_and_h900_bestv2${props.poster_path}`,
 )
 
-const groupedCrews = computed(() => groupBy(crews.value, 'job'))
+const groupedCrews = computed<Record<string, CrewMember[]>>(() => {
+  if (!props.crews) return {}
+  const result = props.crews.reduce((acc: Record<string, CrewMember[]>, { job, ...rest }) => {
+    if (!acc[job]) acc[job] = []
+    acc[job].push({ job, ...rest } as CrewMember)
+    return acc
+  }, {})
+  return result
+})
 </script>
 
 <style scoped></style>
