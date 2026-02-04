@@ -18,4 +18,7 @@ export const movieServices = {
   getVideosMovie(id: string | number) {
     return httpClient.get(`/movie/${id}/videos`)
   },
+  getMovieBySearch(query: string) {
+    return httpClient.get(`/discover/${query}`)
+  },
 }

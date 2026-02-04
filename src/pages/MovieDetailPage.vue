@@ -18,6 +18,7 @@
       <div class="flex max-w-screen-xl gap-6 px-6 py-10 mx-auto">
         <div class="flex-[2]">
           <ActorList :actors="movieInfo?.credits?.cast || []" />
+          <p class="mb-4 text-[1.4vw] font-bold">More like this</p>
           <RelatedMediaList :media-list="relatedMovies || []" :is-loading="isLoadingRelated" />
         </div>
         <div class="flex-1">

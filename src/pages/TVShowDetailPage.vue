@@ -20,6 +20,7 @@
         <div class="flex-[2]">
           <ActorList :actors="actors" />
           <SeasonsList :seasons="(tvInfo?.seasons || []).slice().reverse()" />
+          <p class="mb-4 text-[1.4vw] font-bold">More like this</p>
           <RelatedMediaList
             :media-list="relatedTVShow"
             :is-loading="isLoadingRelated"

@@ -45,6 +45,7 @@
           </p>
         </div>
 
+        <p class="mb-4 text-[1.4vw] font-bold">More like this</p>
         <RelatedMediaList
           :mediaList="peopleInfo.combined_credits?.cast || []"
           title="Known For"

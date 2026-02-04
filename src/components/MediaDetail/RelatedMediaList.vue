@@ -1,7 +1,5 @@
 <template>
   <div class="mt-6">
-    <p class="mb-4 text-[1.4vw] font-bold">More like this</p>
-
     <Loading v-if="props.isLoading" />
 
     <div v-else class="grid grid-cols-3 gap-4 sm:grid-cols-4">
@@ -32,7 +30,7 @@ const props = defineProps<{
     vote_average: number
     media_type: 'movie' | 'tv'
   }[]
-  isLoading: boolean
+  isLoading?: boolean
 }>()
 </script>
 

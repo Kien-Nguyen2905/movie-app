@@ -6,19 +6,19 @@
         src="../assets/images/netflix.png"
         class="w-16 cursor-pointer sm:w-28"
       />
-      <a href="#" class="lg:text-xl">Phim</a>
-      <a href="#" class="lg:text-xl">Truyền hình</a>
+      <!-- <a href="#" class="lg:text-xl">Phim</a>
+      <a href="#" class="lg:text-xl">Truyền hình</a> -->
     </div>
-    <div>
+    <RouterLink to="/search">
       <FontAwesomeIcon :icon="faMagnifyingGlass" class="cursor-pointer" />
-    </div>
+    </RouterLink>
   </header>
 </template>
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 const router = useRouter()
 </script>
 
